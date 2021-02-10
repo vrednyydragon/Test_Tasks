@@ -1,6 +1,6 @@
 # The Test Task 
 
-####How to run on Ubuntu:
+### How to run on Ubuntu:
 
 - Install Python and etc if needed
 - git clone *Alias_test*
@@ -20,13 +20,18 @@
 - Run application tests ***python3 manage.py test***
 
 ## commands for install/check Python and Django:
-python3 -V
 
 sudo apt-get install python3 
 
-django-admin –version
+python3 -V
 
 sudo apt install python3-django
+
+django-admin –version
+
+python3 manage.py makemigrations
+
+python3 manage.py migrate
 
 ## Commands to run tests:
 
