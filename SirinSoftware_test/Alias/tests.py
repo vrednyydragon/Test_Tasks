@@ -1,6 +1,8 @@
+"""My tests."""
 from django.test import TestCase, Client
 from django import test
 from .models import Alias
+
 
 obj_alias = "test-object"
 obj_target = "test-slug-023xf"
@@ -9,14 +11,15 @@ test_on_date = "2025-02-15 12:00:05.000000+00:00"
 
 
 class URLTests(test.TestCase):
+    """Applications test."""
 
     def test_homepage(self):
-        """ Checking if home page returns response status 200 """
+        """Checking if home page returns response status 200."""
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
 
     def test_create(self):
-        """ Creating and checking an object """
+        """Creating and checking an object."""
         c = Client()
         response = c.get(f'/create/{obj_alias}/{obj_target}')
         alias_obj = Alias.objects.filter(alias=obj_alias)
@@ -24,7 +27,7 @@ class URLTests(test.TestCase):
         self.assertTrue(alias_obj.exists())
 
     def test_create_1(self):
-        """ Creating and checking an object when the same object exists """
+        """Creating and checking an object when the same object exists."""
         self.test_create()
         c = Client()
         response = c.get(f'/create/{obj_alias}/{obj_target}')
@@ -33,7 +36,7 @@ class URLTests(test.TestCase):
         self.assertTrue(test_content.decode("utf-8") == 'date of new alias overlapping with existing')
 
     def test_get(self):
-        """ Checking objects target by now """
+        """Checking objects target by now."""
         self.test_create()
         c = Client()
         response = c.get(f'/get/{obj_alias}')
@@ -42,7 +45,7 @@ class URLTests(test.TestCase):
         self.assertTrue(test_content.decode("utf-8") == 'test-slug-023xf')
 
     def test_get_on_date(self):
-        """ Checking objects target by current time """
+        """Checking objects target by current time."""
         self.test_create()
         c = Client()
         response = c.get(f'/get_on_date/{obj_alias}/{test_on_date}')
@@ -51,7 +54,7 @@ class URLTests(test.TestCase):
         self.assertTrue(test_content.decode("utf-8") == 'test-slug-023xf')
 
     def test_alias(self):
-        """ Checking objects alias by period """
+        """Checking objects alias by period."""
         self.test_create()
         obj = Alias.objects.get(alias=obj_alias)
         from_datetime = obj.start
@@ -63,7 +66,7 @@ class URLTests(test.TestCase):
         self.assertTrue(test_content.decode("utf-8") == 'test-object')
 
     def test_replace(self):
-        """ Checking replace an existing alias with a new one at a specific time point """
+        """Checking replace an existing alias with a new one at a specific time point."""
         self.test_create()
         obj = Alias.objects.get(alias=obj_alias)
         obj_start = obj.start
